@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Data;
 using Tunify_Platform.Models;
+using Tunify_Platform.Repositories.Interfaces;
 
 namespace Tunify_Platform.Controllers
 {
@@ -14,40 +15,34 @@ namespace Tunify_Platform.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly TunifyDbContext _context;
+        private readonly IUser _user;
 
-        public UsersController(TunifyDbContext context)
+        public UsersController(IUser context)
         {
-            _context = context;
+            _user = context;
         }
 
         // GET: api/Users
+        [Route("/user/GetAllUsers")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
+            return Ok(await _user.GetAllUsers());
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            var user = await _context.Users.FindAsync(id);
+
+            var user = await _user.GetUserById(id);
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound($"User [{id}] not found.");
             }
 
-            return user;
+            return Ok(user);
         }
 
         // PUT: api/Users/5
@@ -55,30 +50,13 @@ namespace Tunify_Platform.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != user.UserId)
+            var updatedUser = await _user.UpdateUser(id, user);
+            //Check the user
+            if (updatedUser == null)
             {
-                return BadRequest();
+                return NotFound($"User [{id}] not found.");
             }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(updatedUser);
         }
 
         // POST: api/Users
@@ -86,39 +64,24 @@ namespace Tunify_Platform.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.Users == null)
-          {
-              return Problem("Entity set 'TunifyDbContext.Users'  is null.");
-          }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            var newUser = await _user.CreateUser(user);
+            return Ok(newUser);
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _context.Users.FindAsync(id);
+            var user = await _user.GetUserById(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound($"User [{id}] not found");
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
+            await _user.DeleteUser(id);
             return NoContent();
         }
 
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
-        }
+        
     }
 }
