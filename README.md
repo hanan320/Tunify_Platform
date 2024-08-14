@@ -92,3 +92,33 @@ Key features include user management, subscription plans, and playlist managemen
   - **Songs**
     - Description: Links a song to a playlist.
     - Foreign Key (FK): `Song_ID` (references the `Songs` table)
+
+
+## Controllers
+
+The TunifyPlatform uses controllers to manage incoming HTTP requests and responses. Each controller corresponds to a specific entity in the application:
+
+- **UsersController**: Manages user-related actions, including fetching, creating, updating, and deleting users.
+- **ArtistsController**: Handles requests related to artists, such as retrieving artist details and managing artist data.
+- **PlaylistsController**: Deals with operations on playlists, including their creation, modification, and retrieval.
+- **SongsController**: Oversees song-related functionalities, including fetching song details and updating song information.
+
+
+## Repositories
+
+Repositories abstract data access and provide a clean API for data operations. The following repositories are defined:
+
+- **IUser**: Interface for user data operations.
+- **IArtists**: Interface for artist-related data operations.
+- **IPlayList**: Interface for playlist data operations.
+- **ISong**: Interface for song data operations.
+
+
+## Services
+
+Services contain the business logic of the application and interact with the repositories to perform data operations:
+
+- **UserServices**: Implements `IUser` and provides methods to manage user data.
+- **ArtistsServices**: Implements `IArtists` to handle artist data management.
+- **PlaylistsServices**: Implements `IPlayList` for playlist-related business logic.
+- **SongServices**: Implements `ISong` to handle song data and logic.
