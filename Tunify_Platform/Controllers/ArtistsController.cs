@@ -50,7 +50,7 @@ namespace Tunify_Platform.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArtists(int id, Artists artists)
         {
-            var updatedArtist = await _artists.UpdateArtists(id, artist);
+            var updatedArtist = await _artists.UpdateArtists(id, artists);
 
             if (updatedArtist == null)
             {
@@ -65,7 +65,7 @@ namespace Tunify_Platform.Controllers
         [HttpPost]
         public async Task<ActionResult<Artists>> PostArtists(Artists artists)
         {
-            var newArtist = await _artists.CreateArtist(artist);
+            var newArtist = await _artists.CreateArtist(artists);
             return Ok(newArtist);
         }
 
