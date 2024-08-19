@@ -46,5 +46,22 @@ namespace Tunify_Platform.Repositories.Services
             await _context.SaveChangesAsync();
             return song;
         }
+
+        public async Task<List<Song>> GetAllSongsFromArtist(int playlistId)
+        {
+            return await _context.PlaylistSongs
+            .Where(ps => ps.Playlist_Id == playlistId)
+            .Select(ps => ps.Song)
+            .ToListAsync();
+
+
+        }
+
+        public async Task<List<Song>> GetAllSongsFromPlaylist(int artistID)
+        {
+            return await _context.Songs.Where(
+                s => s.Artist_Id == artistID)
+                .ToListAsync();
+        }
     }
 }

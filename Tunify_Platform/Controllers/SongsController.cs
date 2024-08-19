@@ -85,6 +85,19 @@ namespace Tunify_Platform.Controllers
             return NoContent();
         }
 
-      
+        [HttpGet("playlists/{playlistId}/songs")]
+        public async Task<List<Song>> getAllSongsFromPlaylist(int playlistId)
+        {
+            return await _song.GetAllSongsFromPlaylist(playlistId);
+
+        }
+
+        [HttpGet("/artistID")]
+        public async Task<List<Song>> getAllSongsFromArtist(int artistID)
+        {
+            return await _song.GetAllSongsFromArtist(artistID);
+        }
+
+
     }
 }

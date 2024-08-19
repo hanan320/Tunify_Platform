@@ -81,5 +81,16 @@ namespace Tunify_Platform.Controllers
             return NoContent();
         }
 
+        [HttpPost("playlists/{playlistId}/songs/{songId}")]
+        public async Task<IActionResult> AddToPlaylist(int playlistId, int songId)
+        {
+            var playlistsong = await _playList.Add_To_Playlist(playlistId, songId);
+            if (playlistsong == null)
+            {
+                return BadRequest("Failed to add song to playlist.");
+            }
+            return Ok(playlistsong);
+        }
+
     }
 }
