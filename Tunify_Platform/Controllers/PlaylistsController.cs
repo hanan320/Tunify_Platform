@@ -25,14 +25,14 @@ namespace Tunify_Platform.Controllers
         // GET: api/Playlists
         [Route("/playList/GetAllPlayLists")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Playlists>>> Getplaylists()
+        public async Task<ActionResult<IEnumerable<Playlist>>> Getplaylists()
         {
             return Ok(await _playList.GetAllPlaylists());
         }
 
         // GET: api/Playlists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Playlists>> GetPlaylists(int id)
+        public async Task<ActionResult<Playlist>> GetPlaylists(int id)
         {
             var playList = await _playList.GetPlaylistsById(id);
 
@@ -47,7 +47,7 @@ namespace Tunify_Platform.Controllers
         // PUT: api/Playlists/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlaylists(int id, Playlists playlists)
+        public async Task<IActionResult> PutPlaylists(int id, Playlist playlists)
         {
             var updatedPlayList = await _playList.UpdatePlaylists(id, playlists);
             //Check the user
@@ -61,7 +61,7 @@ namespace Tunify_Platform.Controllers
         // POST: api/Playlists
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Playlists>> PostPlaylists(Playlists playlists)
+        public async Task<ActionResult<Playlist>> PostPlaylists(Playlist playlists)
         {
             var newPlayList = await _playList.CreatePlaylists(playlists);
             return Ok(newPlayList);

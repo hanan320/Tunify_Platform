@@ -13,7 +13,7 @@ namespace Tunify_Platform.Repositories.Services
         {
             _context = context;
         }
-        public async Task<Songs> CreateSong(Songs song)
+        public async Task<Song> CreateSong(Song song)
         {
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
@@ -27,19 +27,19 @@ namespace Tunify_Platform.Repositories.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Songs>> GetAllSongs()
+        public async Task<List<Song>> GetAllSongs()
         {
             var allSongs = await _context.Songs.ToListAsync();
             return allSongs;
         }
 
-        public async Task<Songs> GetSongById(int id)
+        public async Task<Song> GetSongById(int id)
         {
             var specificSong = await _context.Songs.FindAsync(id);
             return specificSong;
         }
 
-        public async Task<Songs> UpdateSong(int id, Songs song)
+        public async Task<Song> UpdateSong(int id, Song song)
         {
             var exsitingSong = await _context.Songs.FindAsync(id);
             exsitingSong = song;
