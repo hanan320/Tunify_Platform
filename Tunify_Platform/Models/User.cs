@@ -6,6 +6,13 @@
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Join_Date { get; set; }
-        public int Subscription_ID { get; set; } 
+        public int Subscription_ID { get; set; }
+        public Subscripion Subscription { get; set; }
+
+        public ICollection<Playlist> Playlists { get; set; }
+
+
+
+
     }
 }

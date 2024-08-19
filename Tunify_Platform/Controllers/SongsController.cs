@@ -25,14 +25,14 @@ namespace Tunify_Platform.Controllers
         // GET: api/Songs
         [Route("/songs/GetAllSongs")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Songs>>> GetSongs()
+        public async Task<ActionResult<IEnumerable<Song>>> GetSongs()
         {
             return Ok(await _song.GetAllSongs());
         }
 
         // GET: api/Songs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Songs>> GetSongs(int id)
+        public async Task<ActionResult<Song>> GetSongs(int id)
         {
             var song = await _song.GetSongById(id);
 
@@ -47,7 +47,7 @@ namespace Tunify_Platform.Controllers
         // PUT: api/Songs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSongs(int id, Songs songs)
+        public async Task<IActionResult> PutSongs(int id, Song songs)
         {
             var updatedSong = await _song.UpdateSong(id, songs);
             //Check the user
@@ -61,10 +61,14 @@ namespace Tunify_Platform.Controllers
         // POST: api/Songs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Songs>> PostSongs(Songs songs)
+        public async Task<ActionResult<Song>> PostSongs(Song songs)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var newSong = await _song.CreateSong(songs);
-            return Ok(newSong);
+            return CreatedAtAction(nameof(GetSongs), new { id = newSong.SongsId }, newSong);
         }
 
         // DELETE: api/Songs/5
@@ -81,6 +85,19 @@ namespace Tunify_Platform.Controllers
             return NoContent();
         }
 
-      
+        [HttpGet("playlists/{playlistId}/songs")]
+        public async Task<List<Song>> getAllSongsFromPlaylist(int playlistId)
+        {
+            return await _song.GetAllSongsFromPlaylist(playlistId);
+
+        }
+
+        [HttpGet("/artistID")]
+        public async Task<List<Song>> getAllSongsFromArtist(int artistID)
+        {
+            return await _song.GetAllSongsFromArtist(artistID);
+        }
+
+
     }
 }

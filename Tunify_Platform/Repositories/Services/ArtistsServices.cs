@@ -14,7 +14,7 @@ namespace Tunify_Platform.Repositories.Services
             _context = context;
         }
 
-        public async Task<Artists> CreateArtist(Artists artist)
+        public async Task<Artist> CreateArtist(Artist artist)
         {
             _context.Artists.Add(artist);
             await _context.SaveChangesAsync();
@@ -35,12 +35,12 @@ namespace Tunify_Platform.Repositories.Services
             }
         }
 
-        public async Task<List<Artists>> GetAllArtists()
+        public async Task<List<Artist>> GetAllArtists()
         {
             return await _context.Artists.ToListAsync();
         }
 
-        public async Task<Artists> GetArtistById(int id)
+        public async Task<Artist> GetArtistById(int id)
         {
             var artist = await _context.Artists.FindAsync(id);
             if (artist == null)
@@ -50,12 +50,23 @@ namespace Tunify_Platform.Repositories.Services
             return artist;
         }
 
-        public async Task<Artists> UpdateArtists(int id, Artists artist)
+        public async Task<Artist> UpdateArtists(int id, Artist artist)
         {
             var exsitingArtist = await _context.Artists.FindAsync(id);
             exsitingArtist = artist;
             await _context.SaveChangesAsync();
             return artist;
         }
+        public async Task<Song> AddSongToArtist(int songID, int artistID)
+        {
+            var song = await _context.Songs.FindAsync(songID);
+            song.Artist_Id = artistID;
+            _context.Songs.Update(song);
+            await _context.SaveChangesAsync();
+
+            return song;
+        }
+
+
     }
 }

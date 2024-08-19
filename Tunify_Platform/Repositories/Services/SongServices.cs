@@ -13,7 +13,7 @@ namespace Tunify_Platform.Repositories.Services
         {
             _context = context;
         }
-        public async Task<Songs> CreateSong(Songs song)
+        public async Task<Song> CreateSong(Song song)
         {
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
@@ -27,24 +27,41 @@ namespace Tunify_Platform.Repositories.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Songs>> GetAllSongs()
+        public async Task<List<Song>> GetAllSongs()
         {
             var allSongs = await _context.Songs.ToListAsync();
             return allSongs;
         }
 
-        public async Task<Songs> GetSongById(int id)
+        public async Task<Song> GetSongById(int id)
         {
             var specificSong = await _context.Songs.FindAsync(id);
             return specificSong;
         }
 
-        public async Task<Songs> UpdateSong(int id, Songs song)
+        public async Task<Song> UpdateSong(int id, Song song)
         {
             var exsitingSong = await _context.Songs.FindAsync(id);
             exsitingSong = song;
             await _context.SaveChangesAsync();
             return song;
+        }
+
+        public async Task<List<Song>> GetAllSongsFromArtist(int playlistId)
+        {
+            return await _context.PlaylistSongs
+            .Where(ps => ps.Playlist_Id == playlistId)
+            .Select(ps => ps.Song)
+            .ToListAsync();
+
+
+        }
+
+        public async Task<List<Song>> GetAllSongsFromPlaylist(int artistID)
+        {
+            return await _context.Songs.Where(
+                s => s.Artist_Id == artistID)
+                .ToListAsync();
         }
     }
 }

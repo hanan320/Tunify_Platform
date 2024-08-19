@@ -4,10 +4,13 @@ namespace Tunify_Platform.Repositories.Interfaces
 {
     public interface ISong
     {
-        Task<Songs> CreateSong(Songs song);
-        Task<Songs> GetSongById(int id);
-        Task<List<Songs>> GetAllSongs();
-        Task<Songs> UpdateSong(int id, Songs song);
+        Task<Song> CreateSong(Song song);
+        Task<Song> GetSongById(int id);
+        Task<List<Song>> GetAllSongs();
+        Task<Song> UpdateSong(int id, Song song);
         Task DeleteSong(int id);
+        Task<List<Song>> GetAllSongsFromArtist(int artistID);
+
+        Task<List<Song>> GetAllSongsFromPlaylist(int playlistID);
     }
 }

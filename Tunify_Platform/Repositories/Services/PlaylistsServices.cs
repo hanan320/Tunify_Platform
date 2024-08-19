@@ -13,8 +13,13 @@ namespace Tunify_Platform.Repositories.Services
         {
             _context = context;
         }
-        public async Task<Playlists> CreatePlaylists(Playlists playlists)
+        public async Task<Playlist> CreatePlaylists(Playlist playlists)
         {
+            if (playlists.playlistSongs == null)
+            {
+                playlists.playlistSongs = new List<PlaylistSong>();
+            }
+
             _context.playlists.Add(playlists);
             await _context.SaveChangesAsync();
             return playlists;
@@ -27,24 +32,35 @@ namespace Tunify_Platform.Repositories.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Playlists>> GetAllPlaylists()
+        public async Task<List<Playlist>> GetAllPlaylists()
         {
             var allPlaylists = await _context.playlists.ToListAsync();
             return allPlaylists;
         }
 
-        public async Task<Playlists> GetPlaylistsById(int id)
+        public async Task<Playlist> GetPlaylistsById(int id)
         {
             var specificPlayList = await _context.playlists.FindAsync(id);
             return specificPlayList;
         }
 
-        public async Task<Playlists> UpdatePlaylists(int id, Playlists playList)
+        public async Task<Playlist> UpdatePlaylists(int id, Playlist playList)
         {
             var exsitingPlaylist = await _context.playlists.FindAsync(id);
             exsitingPlaylist = playList;
             await _context.SaveChangesAsync();
             return playList;
+        }
+
+        public async Task<PlaylistSong> Add_To_Playlist(int playlistId, int songId)
+        {
+            var playlistsong = new PlaylistSong();
+            playlistsong.Playlist_Id = playlistId;
+            playlistsong.Song_Id = songId;
+
+            _context.PlaylistSongs.Add(playlistsong);
+            await _context.SaveChangesAsync();
+            return playlistsong;
         }
 
     }

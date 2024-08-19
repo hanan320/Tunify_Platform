@@ -25,7 +25,7 @@ namespace Tunify_Platform.Controllers
         // GET: api/Artists
         [Route("/artist/GetAllArtists")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Artists>>> GetArtists()
+        public async Task<ActionResult<IEnumerable<Artist>>> GetArtists()
         {
             var artists = await _artists.GetAllArtists();
             return Ok(artists);
@@ -33,7 +33,7 @@ namespace Tunify_Platform.Controllers
 
         // GET: api/Artists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Artists>> GetArtists(int id)
+        public async Task<ActionResult<Artist>> GetArtists(int id)
         {
             var artist = await _artists.GetArtistById(id);
 
@@ -48,7 +48,7 @@ namespace Tunify_Platform.Controllers
         // PUT: api/Artists/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArtists(int id, Artists artists)
+        public async Task<IActionResult> PutArtists(int id, Artist artists)
         {
             var updatedArtist = await _artists.UpdateArtists(id, artists);
 
@@ -63,7 +63,7 @@ namespace Tunify_Platform.Controllers
         // POST: api/Artists
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Artists>> PostArtists(Artists artists)
+        public async Task<ActionResult<Artist>> PostArtists(Artist artists)
         {
             var newArtist = await _artists.CreateArtist(artists);
             return Ok(newArtist);
@@ -83,6 +83,16 @@ namespace Tunify_Platform.Controllers
             await _artists.DeleteArtists(id);
             return NoContent();
         }
+
+        [HttpPost("artists/{artistId}/songs/{songId}")]
+        public async Task<Song> AddSongToArtist(int songID, int artistID)
+        {
+
+            return await _artists.AddSongToArtist(songID, artistID);
+
+        }
+
+
 
     }
 }

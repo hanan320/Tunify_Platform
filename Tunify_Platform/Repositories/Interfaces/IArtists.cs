@@ -4,10 +4,12 @@ namespace Tunify_Platform.Repositories.Interfaces
 {
     public interface IArtists
     {
-        Task<Artists> CreateArtist(Artists artist);
-        Task<Artists> GetArtistById(int id);
-        Task<List<Artists>> GetAllArtists();
-        Task<Artists> UpdateArtists(int id, Artists artist);
+        Task<Artist> CreateArtist(Artist artist);
+        Task<Artist> GetArtistById(int id);
+        Task<List<Artist>> GetAllArtists();
+        Task<Artist> UpdateArtists(int id, Artist artist);
         Task DeleteArtists(int id);
+        Task<Song> AddSongToArtist(int songID, int artistID);
+
     }
 }
