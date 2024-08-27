@@ -122,3 +122,14 @@ Services contain the business logic of the application and interact with the rep
 - **ArtistsServices**: Implements `IArtists` to handle artist data management.
 - **PlaylistsServices**: Implements `IPlayList` for playlist-related business logic.
 - **SongServices**: Implements `ISong` to handle song data and logic.
+
+## Swagger UI Integration
+
+Swagger UI is included in the TunifyPlatform project to offer easy-to-use, interactive documentation for the API. It helps you explore and test the available endpoints.
+
+### How to Access Swagger UI
+
+1. **Start the Application**: Run the app using your preferred method (e.g., `dotnet run`, Visual Studio).
+
+2. **Open Swagger UI**: Once running, open a web browser and go to:  
+   `http://localhost:{PORT}/TunifySwagger`
