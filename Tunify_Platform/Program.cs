@@ -21,9 +21,35 @@ namespace Tunify_Platform
             builder.Services.AddTransient<IPlayList, PlaylistsServices>();
             builder.Services.AddTransient<IArtists, ArtistsServices>();
 
+            builder.Services.AddSwaggerGen(
+              option =>
+              {
+                  option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                  {
+                      Title = "Tunify API",
+                      Version = "v1",
+                      Description = "API for managing playlists, songs, and artists in the Tunify Platform"
+                  });
+              }
+              );
+
             var app = builder.Build();
+            app.UseSwagger(
+                         options =>
+                         {
+                             options.RouteTemplate = "api/{documentName}/swagger.json";
+                         }
+                         );
+
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/v1/swagger.json", "Tunify API v1");
+                options.RoutePrefix = "";
+            });
 
             app.MapControllers();
+
             app.MapGet("/", () => "Hello World!");
 
             app.Run();
